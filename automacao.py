@@ -41,28 +41,24 @@ def criar_pastas(ano):
     print("Estrutura Criada")
     input("Pressione Enter para continuar...")
 
-    
 
 
-
-def pasta_relatorio(mes_do_relatorio):
-    pasta_destino = f"Relatório {mes_do_relatorio}"
-    if not os.path.exists(pasta_destino):
-        os.mkdir(pasta_destino)
-        print(f"Diretório '{pasta_destino}' criado!")
-        input("Pressione Enter para continuar...")
+def pasta_relatorio(ano,mes_do_relatorio):
+    pasta_destino = f"RELATÓRIOS/{ano}/{mes_do_relatorio}"
     return pasta_destino
 
-def juntar_pdfs(lista_de_readers, pasta_destino, caminho_para_salvar, mensagem_final):
+def juntar_pdfs(lista_de_readers, pasta_principal,pasta_destino,nome_arquivo,mensagem_final):
     writer = PdfWriter()
     for reader in lista_de_readers:
         for page in reader.pages:
             writer.add_page(page)
-    nome_pdf_turno = os.path.join(pasta_destino, caminho_para_salvar)
+    nome_pdf_turno = os.path.join(pasta_principal,pasta_destino,nome_arquivo)
+    print("paizao se liga aqui",nome_pdf_turno)
     with open(nome_pdf_turno, "wb") as f_out:
         writer.write(f_out)
     print(mensagem_final)
     input("Pressione Enter para continuar...")
+    print("passou")
 
 
 
@@ -73,7 +69,9 @@ def juntar_pdfs_e_imagens_turnos(ano,mes):
 
     mes_pasta = mes
 
-    pasta_destino = pasta_relatorio(mes_pasta)
+    pasta_destino = pasta_relatorio(ano,mes_pasta)
+
+    print(pasta_destino)
 
     todos_arquivos_geral = []
 
@@ -91,6 +89,7 @@ def juntar_pdfs_e_imagens_turnos(ano,mes):
         else:
             print(f"Pasta do turno não encontrada: {diretorio_turno}")
             input("Pressione Enter para continuar...")
+            print("oioi")
             continue
         
         if arquivos_turno:
@@ -114,20 +113,23 @@ def juntar_pdfs_e_imagens_turnos(ano,mes):
                 else:
                     print(f"Arquivo ignorado: {arquivo}")
                     input("Pressione Enter para continuar...")
+                    print("oioioi")
 
-            caminho_mes= f"{ano}_{mes}_{turno}.pdf"
             mensagem_mes=f"PDF do turno '{turno}' criado com {len(pdfs_convertidos)} arquivos!"
-
-            juntar_pdfs(pdfs_convertidos,pasta_destino,caminho_mes,mensagem_mes)
+            nome_arquivo = f"{ano}_{mes}_{turno}.pdf"
+            juntar_pdfs(pdfs_convertidos,pasta_principal,pasta_destino,nome_arquivo,mensagem_mes)
+        
             todos_arquivos_geral.extend(pdfs_convertidos)
+            print(todos_arquivos_geral)
 
 
-    if todos_arquivos_geral:
-        caminho_relatorio= f"{ano}_{mes}_todos_turnos.pdf"
-        mensagem_relatorio=f"PDF geral criado com {len(todos_arquivos_geral)} arquivos!"
-        input("Pressione Enter para continuar...")
-        juntar_pdfs(todos_arquivos_geral,pasta_destino,caminho_relatorio,mensagem_relatorio)
-        input("Pressione Enter para continuar...")
+    
+    caminho_relatorio= f"{ano}_{mes}_todos_turnos.pdf"
+    mensagem_relatorio=f"PDF geral criado com {len(todos_arquivos_geral)} arquivos!"
+    input("Pressione Enter para continuar...")
+    juntar_pdfs(todos_arquivos_geral,pasta_principal,pasta_destino,caminho_relatorio,mensagem_relatorio)
+    input("Pressione Enter para continuar...")
+    print("oioioi")
 
 
 
