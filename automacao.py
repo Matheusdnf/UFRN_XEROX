@@ -1,39 +1,47 @@
 
 from io import BytesIO
 import os
-import re
 from PIL import Image
 from pypdf import PdfWriter, PdfReader
 
-
-def criar_pastas(turno, ano):
-    pasta_principal="CONTROLE DE COMPROVANTES"
-    base_turno = os.path.join(pasta_principal, turno)   
-    base_ano = os.path.join(base_turno, ano)           
-
-    if not os.path.exists(base_turno):
-        os.makedirs(base_turno)
-        print(f"Turno {turno} criado em {pasta_principal}.")
-        input("Pressione Enter para continuar...")
-        return
-
-    if os.path.exists(base_ano):
-        print(f"O ano {ano} já existe no turno {turno}!")
-        input("Pressione Enter para continuar...")
-        return
-
-    os.mkdir(base_ano)
-
+#refatorar para criar tudo de uma vez, só precisando passar o ano e não o turno 
+def criar_pastas(ano):
+    #Pastas Principais
+    pastas_principais= ["MANHÃ","TARDE","NOITE","RELATÓRIOS"]
+    #Pastas dos meses
     meses = [
         "1-JANEIRO", "2-FEVEREIRO", "3-MARÇO", "4-ABRIL", "5-MAIO", "6-JUNHO",
         "7-JULHO", "8-AGOSTO", "9-SETEMBRO", "10-OUTUBRO", "11-NOVEMBRO", "12-DEZEMBRO"
     ]
+    #Diretório raiz
+    diretorio_raiz="CONTROLE DE COMPROVANTES"
+    entra_pasta = os.path.join(diretorio_raiz)     
+    
+    
+    for pastas in pastas_principais:
+        if os.path.exists(os.path.join(diretorio_raiz,pastas,ano)):
+            print(f"O ano {ano} já existe! em {pastas}")
+            continue
+        else:
+            print(f"{pastas} ainda não existe com o ano {ano}, criado")
+            os.makedirs(os.path.join(diretorio_raiz,pastas,ano))
+            print(f"Criado O ano {ano} para a pasta: {pastas}")
 
-    for mes in meses:
-        os.mkdir(os.path.join(base_ano, mes))
-
-    print(f"Estrutura criada para o ano {ano} no turno {turno}!")
     input("Pressione Enter para continuar...")
+    
+
+    for pastas in pastas_principais:
+        criar_meses = os.path.join(entra_pasta, pastas, ano)
+    
+        os.makedirs(criar_meses,exist_ok=True)
+        for mes in meses:
+            os.makedirs(os.path.join(criar_meses, mes), exist_ok=True)
+
+
+    print("Estrutura Criada")
+    input("Pressione Enter para continuar...")
+
+    
 
 
 
