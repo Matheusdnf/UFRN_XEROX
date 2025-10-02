@@ -34,3 +34,33 @@ def verifica_mes(mes):
         mes_num = match.group()
         return meses_dict[mes_num]
 
+def entrada_ano():
+    while True:
+        ano = input("Digite o ano (ex: 2023): ")
+        if not verifica_ano(ano):
+            print("Ano inválido! Digite um ano no formato 20XX.")
+        else:
+            break
+    return ano
+
+def entrada_mes():
+    menu_meses()
+    while True:
+        entrada_mes = input("Digite o mês: ")
+        if not verifica_mes(entrada_mes):
+            print("Mês inválido! Digete o número que corresponde ao mês!.")
+        else:
+            mes=verifica_mes(entrada_mes)
+            break
+    return mes
+
+
+def entrada_turno():
+    while True:
+        entrada_turno = int(input("Digite o turno (1 - MANHÃ, 2 - TARDE, 3 - NOITE): "))
+        if not verifica_turno(entrada_turno):
+            print("Turno inválido!")
+        else:
+            turno=verifica_turno(entrada_turno)
+            break
+    return turno
