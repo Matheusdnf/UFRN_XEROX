@@ -9,16 +9,6 @@ def verifica_ano(ano):
         return False
     return ano
 
-def verifica_turno(turno):
-    turnos_dict = {
-        1: "MANHÃ",
-        2: "TARDE",
-        3: "NOITE"
-    }
-    if turno not in turnos_dict:
-        return False
-    else:    
-        return turnos_dict[turno]
     
 def verifica_mes(mes):
     meses_dict = {
@@ -54,13 +44,3 @@ def entrada_mes():
             break
     return mes
 
-
-def entrada_turno():
-    while True:
-        entrada_turno = int(input("Digite o turno (1 - MANHÃ, 2 - TARDE, 3 - NOITE): "))
-        if not verifica_turno(entrada_turno):
-            print("Turno inválido!")
-        else:
-            turno=verifica_turno(entrada_turno)
-            break
-    return turno
