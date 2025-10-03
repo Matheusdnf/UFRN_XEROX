@@ -1,7 +1,7 @@
 import os
 from automacao import criar_pastas,juntar_pdfs_e_imagens_turnos
 from telas import meu_menu, tela_apresentacao
-from valida import entrada_ano, entrada_mes, entrada_turno
+from valida import entrada_ano, entrada_mes
 
 
 
@@ -12,11 +12,9 @@ def nav_menu():
         meu_menu()
         choice = input("Digite o número da opção desejada: ")
         if choice == '1':
-            turno=entrada_turno()
             ano=entrada_ano()
-            print(turno)
             print(ano)
-            criar_pastas(turno,ano)
+            criar_pastas(ano)
         elif choice == '2':
             ano=entrada_ano()
             mes=entrada_mes()
@@ -26,7 +24,7 @@ def nav_menu():
             break
         else:
             input("Opção inválida. Tente novamente.")
-
+            
 nav_menu()
 
    
