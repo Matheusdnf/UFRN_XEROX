@@ -4,7 +4,6 @@ from telas import meu_menu, tela_apresentacao
 from valida import entrada_ano, entrada_mes
 
 
-
 def nav_menu():
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')  
@@ -24,7 +23,7 @@ def nav_menu():
             break
         else:
             input("Opção inválida. Tente novamente.")
-            
-nav_menu()
+    input()
+
 
    
