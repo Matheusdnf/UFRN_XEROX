@@ -12,11 +12,11 @@ def verifica_ano(ano):
     
 def verifica_mes(mes):
     meses_dict = {
-        "1": "1-JANEIRO", "2": "2-FEVEREIRO", "3": "3-MARÇO", "4": "4-ABRIL",
-        "5": "5-MAIO", "6": "6-JUNHO", "7": "7-JULHO", "8": "8-AGOSTO",
-        "9": "9-SETEMBRO", "10": "10-OUTUBRO", "11": "11-NOVEMBRO", "12": "12-DEZEMBRO"
+        "01": "01-JANEIRO", "02": "02-FEVEREIRO", "3": "03-MARÇO", "04": "04-ABRIL",
+        "05": "05-MAIO", "06": "06-JUNHO", "07": "07-JULHO", "08": "08-AGOSTO",
+        "09": "09-SETEMBRO", "10": "10-OUTUBRO", "11": "11-NOVEMBRO", "12": "12-DEZEMBRO"
     }
-    padrao_mes = r"^(1[0-2]|[1-9])"
+    padrao_mes = r"^(0[1-9]|1[0-2])$"
     match = re.match(padrao_mes, mes)
     if not match:
         return False
