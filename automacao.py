@@ -10,8 +10,8 @@ def criar_pastas(ano):
     pastas_principais= ["MANHÃ","TARDE","NOITE","RELATÓRIOS"]
     #Pastas dos meses
     meses = [
-        "1-JANEIRO", "2-FEVEREIRO", "3-MARÇO", "4-ABRIL", "5-MAIO", "6-JUNHO",
-        "7-JULHO", "8-AGOSTO", "9-SETEMBRO", "10-OUTUBRO", "11-NOVEMBRO", "12-DEZEMBRO"
+        "01-JANEIRO", "02-FEVEREIRO", "03-MARÇO", "04-ABRIL", "05-MAIO", "06-JUNHO",
+        "07-JULHO", "08-AGOSTO", "09-SETEMBRO", "10-OUTUBRO", "11-NOVEMBRO", "12-DEZEMBRO"
     ]
     #Diretório raiz
     diretorio_raiz="CONTROLE DE COMPROVANTES"
@@ -51,23 +51,62 @@ def juntar_pdfs(lista_de_pdfs,pasta_principal,pasta_destino,nome_arquivo,mensage
     nome_pdf_turno = os.path.join(pasta_principal,pasta_destino,nome_arquivo)
     with open(nome_pdf_turno, "wb") as f_out:
         writer.write(f_out)
+        
     print(mensagem_final)
     input("Pressione Enter para continuar...")
 
 
+def pegar_nome_diretorios(caminho):
+    diretorios=[]
+    for diretorio in os.listdir(caminho):
+        caminho_completo = os.path.join(caminho, diretorio)
+        if os.path.isdir(caminho_completo):
+            diretorios.append(diretorio)
+    return diretorios
+
+
+
+def verifica_diretorio_turno(turnos, diretorios):
+    #evita duplicaidades no vetor
+    encontrados = set()
+
+    # quebra cada item de "turnos" em palavras individuais
+    palavras_turnos = []
+    for turno in turnos:
+        palavras_turnos.extend(turno.lower().split())
+
+    # percorre os diretórios e verifica se alguma palavra aparece no nome da pasta
+    for diretorio in diretorios:
+        nome_lower = diretorio.lower()
+        for palavra in palavras_turnos:
+            if palavra in nome_lower:
+                encontrados.add(diretorio)
+
+    return list(encontrados)
+
 
 def juntar_pdfs_e_imagens_turnos(ano,mes):
-    turnos = ["MANHÃ", "TARDE", "NOITE"]
-
+    
+    
+    turnos = ["MANHÃ", "TARDE", "NOITE"]    
+    
     pasta_principal="CONTROLE DE COMPROVANTES"
 
+    diretorios=pegar_nome_diretorios(pasta_principal)
+
+
+    vetor_turno=verifica_diretorio_turno(turnos,diretorios)
+    
+
+ 
     # RELATÓRIOS/ANO/MÊS
     pasta_destino = pasta_relatorio(ano,mes)
+
 
     todos_arquivos_geral = []
 
 
-    for turno in turnos:
+    for turno in vetor_turno:
         diretorio_turno = os.path.join(pasta_principal,turno, ano, mes)
         arquivos_turno = []
         if os.path.exists(diretorio_turno):
@@ -84,6 +123,7 @@ def juntar_pdfs_e_imagens_turnos(ano,mes):
             pdfs_convertidos = []
             for arquivo in arquivos_turno:
                 ext = os.path.splitext(arquivo)[1].lower()
+               
             
                 if ext in [".jpg", ".jpeg", ".png", ".bmp", ".tiff"]:
                     img = Image.open(arquivo).convert("RGB")
@@ -106,7 +146,7 @@ def juntar_pdfs_e_imagens_turnos(ano,mes):
             juntar_pdfs(pdfs_convertidos,pasta_principal,pasta_destino,nome_arquivo,mensagem_sucesso)
         
             todos_arquivos_geral.extend(pdfs_convertidos)
-            print(todos_arquivos_geral)
+
 
 
 
